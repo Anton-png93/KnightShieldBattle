@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Background_ScaledDown_50percent_0: -7204212276260455659
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
