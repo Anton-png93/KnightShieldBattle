@@ -21,7 +21,7 @@ public class GoalTrigger : MonoBehaviour
                 scoreManager.AddLeftScore();
             }
 
-            maceBall.ResetBall();
+           maceBall.ResetBall(scoreManager.lastGoalByPlayer);
         }
     }
 }
