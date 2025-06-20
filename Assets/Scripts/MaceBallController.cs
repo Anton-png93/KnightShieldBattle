@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class MaceBallController : MonoBehaviour
 {
@@ -10,7 +11,8 @@ public class MaceBallController : MonoBehaviour
 
     {
         rb = GetComponent<Rigidbody2D>();
-        ResetBall(scoreManager.lastGoalByPlayer);
+        StartCoroutine(DelayedStart());
+        
     }
     public void ResetBall(bool playerServe)
 {
@@ -34,14 +36,19 @@ public class MaceBallController : MonoBehaviour
     rb.linearVelocity = direction * speed;
 }
     void OnCollisionEnter2D(Collision2D collision)
-{
-    // Проверка — если мяч почти не двигается по Y
-    if (Mathf.Abs(rb.linearVelocity.y) < 0.5f)
     {
-        Vector2 fixedVelocity = rb.linearVelocity;
-        fixedVelocity.y = Random.Range(-1f, 1f); // Случайный вертикальный толчок
-        rb.linearVelocity = fixedVelocity.normalized * speed;
+        // Проверка — если мяч почти не двигается по Y
+        if (Mathf.Abs(rb.linearVelocity.y) < 0.5f)
+        {
+            Vector2 fixedVelocity = rb.linearVelocity;
+            fixedVelocity.y = Random.Range(-1f, 1f); // Случайный вертикальный толчок
+            rb.linearVelocity = fixedVelocity.normalized * speed;
+        }
     }
+IEnumerator DelayedStart()
+{
+    yield return new WaitForSeconds(0.1f); // Подождём, пока всё инициализируется
+    ResetBall(scoreManager.lastGoalByPlayer); // Теперь переменная уже точно установлена
 }
 
 }

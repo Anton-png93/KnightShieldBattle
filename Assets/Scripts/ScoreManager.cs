@@ -4,8 +4,10 @@ using TMPro;
 public class ScoreManager : MonoBehaviour
 
 
+
 {
     public bool lastGoalByPlayer = false;
+    public bool isFirstServe = true;
     
     public TextMeshProUGUI scoreText;
     public int leftScore = 0;
