@@ -1,0 +1,12 @@
+# ninja log v5
+190	621	7723819600645739	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	4be7d12094b8f6f4
+624	946	7723819603740802	E:/KnightShieldBattle/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/2r5y1ti4/obj/arm64-v8a/libswappywrapper.so	4d6af2fefac810ed
+69	4398	7723819638203297	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	c035dd9c1d8a5d0a
+90	4427	7723819638411509	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	6b15281fdf6ce4d8
+2	4450	7723819638645123	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	f069ba66de269bee
+26	4854	7723819642526437	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	a4377f525128abe2
+163	5124	7723819645395430	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	a5edca126a682cc
+138	5133	7723819645411291	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	495edcc5f3c607b2
+114	5656	7723819650786399	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	c98e27272f30206a
+47	5810	7723819652260426	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	f1a47cd224bc1be8
+5811	6168	7723819655945831	E:/KnightShieldBattle/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/2r5y1ti4/obj/arm64-v8a/libgame.so	187095ed55ce2898
