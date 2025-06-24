@@ -10,6 +10,7 @@ public class MaceBallController : MonoBehaviour
     private float currentSpeed;
     private float timeSinceServe;
     private Rigidbody2D rb;
+    private bool serveToPlayer = true;
 
     void Start()
 
@@ -20,28 +21,23 @@ public class MaceBallController : MonoBehaviour
         
     }
     public void ResetBall(bool playerServe)
+{
+    transform.position = Vector2.zero;
+
+    Vector2 direction;
+    if (serveToPlayer)
     {
-        // Сбрасываем позицию мяча в центр
-        transform.position = Vector2.zero;
-
-        // Определяем направление удара
-        Vector2 direction;
-        if (playerServe)
-        {
-            // Если забил игрок — подаём вправо (на компьютер)
-            direction = new Vector2(1, 1).normalized;
-        }
-        else
-        {
-            // Если забил компьютер — подаём влево (на игрока)
-            direction = new Vector2(-1, 1).normalized;
-        }
-
-        // Применяем скорость
-        rb.linearVelocity = direction * currentSpeed;
-        timeSinceServe = 0f;
-        
+        direction = new Vector2(-1, 1).normalized;
     }
+    else
+    {
+        direction = new Vector2(1, 1).normalized;
+    }
+
+    rb.linearVelocity = direction * currentSpeed;
+    serveToPlayer = !serveToPlayer; // Меняем сторону подачи
+    timeSinceServe = 0f;
+}
         void Update()
 {
     // Увеличиваем скорость со временем
