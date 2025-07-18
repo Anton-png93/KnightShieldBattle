@@ -43,11 +43,8 @@ public class EnemyShieldAI : MonoBehaviour
             currentError = Mathf.Max(minError, currentError - errorDecrease * Time.deltaTime);
         }
 
-        // Позиционирование с ошибкой
         float targetX = maceBall.position.x + Random.Range(-currentError, currentError);
-        float newX = Mathf.MoveTowards(transform.position.x, targetX, currentSpeed * Time.deltaTime);
-        Vector2 newPos = new Vector2(newX, rb.position.y);
-
-       rb.linearVelocity = (newPos - rb.position) / Time.fixedDeltaTime;
+        Vector2 targetPos = new Vector2(targetX, rb.position.y);
+        rb.MovePosition(Vector2.Lerp(rb.position, targetPos, currentSpeed * Time.deltaTime));
     }
 }
