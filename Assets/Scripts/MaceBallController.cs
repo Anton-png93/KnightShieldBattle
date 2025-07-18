@@ -10,6 +10,9 @@ public class MaceBallController : MonoBehaviour
     private float currentSpeed;
     private float timeSinceServe;
     private Rigidbody2D rb;
+    public AudioClip hitSound;
+    private AudioSource audioSource;
+
     private bool serveToPlayer = true;
 
     void Start()
@@ -18,6 +21,7 @@ public class MaceBallController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         StartCoroutine(DelayedStart());
         currentSpeed = startSpeed;
+        audioSource = GetComponent<AudioSource>();
         
     }
     public void ResetBall(bool playerServe)
@@ -34,18 +38,14 @@ public class MaceBallController : MonoBehaviour
         direction = new Vector2(1, 1).normalized;
     }
 
-    rb.linearVelocity = direction * currentSpeed;
+   rb.linearVelocity = direction * startSpeed;
     serveToPlayer = !serveToPlayer; // Меняем сторону подачи
     timeSinceServe = 0f;
 }
-        void Update()
-{
-    // Увеличиваем скорость со временем
-    timeSinceServe += Time.deltaTime;
-    currentSpeed = startSpeed + speedIncreasePerSecond * timeSinceServe;
-}
+    
     void OnCollisionEnter2D(Collision2D collision)
     {
+        audioSource.PlayOneShot(hitSound);
         // Проверка — если мяч почти не двигается по Y
         if (Mathf.Abs(rb.linearVelocity.y) < 0.5f)
         {
