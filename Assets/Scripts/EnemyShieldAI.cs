@@ -17,12 +17,14 @@ public class EnemyShieldAI : MonoBehaviour
 
     private Rigidbody2D rb;
     private ScoreManager scoreManager;
+    [Range(0f, 1f)] public float difficulty = 0.5f; // 0 — легко, 1 — сложно
 
     void Start()
     {
+        
         rb = GetComponent<Rigidbody2D>();
-        currentSpeed = startSpeed;
-        currentError = startError;
+        currentSpeed = Mathf.Lerp(startSpeed, maxSpeed, difficulty);
+        currentError = Mathf.Lerp(startError, minError, difficulty);
 
         scoreManager = FindObjectOfType<ScoreManager>();
     }

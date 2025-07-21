@@ -1151,6 +1151,7 @@ MonoBehaviour:
   startError: 0.5
   minError: 0.05
   errorDecrease: 0.01
+  difficulty: 0.5
 --- !u!50 &536096369
 Rigidbody2D:
   serializedVersion: 5
@@ -2526,7 +2527,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreManager: {fileID: 990942291}
-  startSpeed: 2
+  startSpeed: 3.5
   speedIncreasePerSecond: 0.5
   hitSound: {fileID: 8300000, guid: 1955a848f61f8d344b36171d9e0aa11d, type: 3}
 --- !u!50 &1799569661
