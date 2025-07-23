@@ -14,6 +14,8 @@ public class MaceBallController : MonoBehaviour
     private AudioSource audioSource;
 
     private bool serveToPlayer = true;
+    private Vector2 direction;
+    
 
     void Start()
 
@@ -24,11 +26,15 @@ public class MaceBallController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         
     }
-    public void ResetBall(bool playerServe)
+   public void ResetBall(bool playerServe)
 {
     transform.position = Vector2.zero;
 
-    Vector2 direction;
+    serveToPlayer = playerServe;
+
+    serveToPlayer = playerServe; // ⬅ ПЕРЕНЕСЛИ НАВЕРХ
+
+   // direction уже объявлен выше
     if (serveToPlayer)
     {
         direction = new Vector2(-1, 1).normalized;
@@ -38,8 +44,7 @@ public class MaceBallController : MonoBehaviour
         direction = new Vector2(1, 1).normalized;
     }
 
-   rb.linearVelocity = direction * startSpeed;
-    serveToPlayer = !serveToPlayer; // Меняем сторону подачи
+    rb.linearVelocity = direction * startSpeed;
     timeSinceServe = 0f;
 }
     
@@ -49,15 +54,15 @@ public class MaceBallController : MonoBehaviour
         // Проверка — если мяч почти не двигается по Y
         if (Mathf.Abs(rb.linearVelocity.y) < 0.5f)
         {
-            Vector2 fixedVelocity = rb.linearVelocity;
+           Vector2 fixedVelocity = rb.linearVelocity;
             fixedVelocity.y = Random.Range(-1f, 1f); // Случайный вертикальный толчок
-            rb.linearVelocity = fixedVelocity.normalized * currentSpeed;
+           rb.linearVelocity = direction * startSpeed;
         }
     }
 IEnumerator DelayedStart()
 {
     yield return new WaitForSeconds(0.1f); // Подождём, пока всё инициализируется
-    ResetBall(scoreManager.lastGoalByPlayer); // Теперь переменная уже точно установлена
+   
 }
 
 }

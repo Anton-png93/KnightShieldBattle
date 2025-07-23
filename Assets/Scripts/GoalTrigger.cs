@@ -6,22 +6,23 @@ public class GoalTrigger : MonoBehaviour
     public MaceBallController maceBall;
     public ScoreManager scoreManager;
 
-    private void OnTriggerEnter2D(Collider2D other)
+   private void OnTriggerEnter2D(Collider2D other)
+{
+    if (other.CompareTag("Ball"))
     {
-        if (other.CompareTag("Ball"))
+        if (isTopGoal)
         {
-            if (isTopGoal)
-            {
-                // Игроку забили гол
-                scoreManager.AddRightScore();
-            }
-            else
-            {
-                // Игрок забил гол
-                scoreManager.AddLeftScore();
-            }
-
-           maceBall.ResetBall(scoreManager.lastGoalByPlayer);
+            // Игроку забили гол
+            scoreManager.AddRightScore();
+            maceBall.ResetBall(true); // мяч появляется на стороне игрока
+        }
+        else
+        {
+            // Игрок забил гол
+            scoreManager.AddLeftScore();
+            maceBall.ResetBall(false); // мяч появляется на стороне противника
         }
     }
+}
+
 }

@@ -2,24 +2,38 @@ using UnityEngine;
 
 public class PlayerShieldController : MonoBehaviour
 {
-    public float minX = -2.6f;
-    public float maxX = 2.6f;
-    private Rigidbody2D rb;
+    public float minX = -2.2f;
+    public float maxX = 2.2f;
 
-    void Start()
+    private Camera mainCamera;
+    private float halfHeight;
+
+    private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        mainCamera = Camera.main;
+        halfHeight = mainCamera.orthographicSize;
     }
 
-    void Update()
+    private void Update()
     {
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 mouseViewportPos = mainCamera.ScreenToViewportPoint(Input.mousePosition);
+
+        // ⛔ если мышка вне экрана — ничего не делать
+        if (mouseViewportPos.y < 0 || mouseViewportPos.y > 1 || mouseViewportPos.x < 0 || mouseViewportPos.x > 1)
+            return;
+
+        // получаем координаты мыши в мире
+        Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        mouseWorldPos.z = 0;
+
+        // ограничиваем щит: он не должен подниматься выше середины поля
+        float middleY = mainCamera.transform.position.y;
+        float minY = -halfHeight + 1f;     // нижняя граница камеры
+        float maxY = middleY - 1f; // поднимаемся не до самой середины
 
         float clampedX = Mathf.Clamp(mouseWorldPos.x, minX, maxX);
-        Vector2 newPos = new Vector2(clampedX, rb.position.y);
+        float clampedY = Mathf.Clamp(mouseWorldPos.y, minY, maxY);
 
-        rb.MovePosition(newPos);
-
-        Debug.Log("Mouse X: " + mouseWorldPos.x + " | Clamped: " + clampedX);
+        transform.position = new Vector3(clampedX, clampedY, 0);
     }
 }
