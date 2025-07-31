@@ -48,6 +48,12 @@ public class EnemyShieldAI : MonoBehaviour
         float newX = Mathf.MoveTowards(transform.position.x, targetX, currentSpeed * Time.deltaTime);
         Vector2 newPos = new Vector2(newX, rb.position.y);
 
-       rb.linearVelocity = (newPos - rb.position) / Time.fixedDeltaTime;
+        rb.linearVelocity = (newPos - rb.position) / Time.fixedDeltaTime;
+        Vector3 pos = transform.position;
+        float top = Camera.main.orthographicSize - 1f;   // верхнее ограничение
+        float bottom = 0f;  // середина поля — ниже не пускаем
+        pos.y = Mathf.Clamp(pos.y, bottom, top);
+        transform.position = pos;
+       
     }
 }
