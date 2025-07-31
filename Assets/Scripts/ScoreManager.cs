@@ -1,11 +1,13 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class ScoreManager : MonoBehaviour
 
 
 
 {
+    public GameObject restartButton; // сюда перетащим кнопку из Canvas
     public bool lastGoalByPlayer = false;
     public bool isFirstServe = true;
     
@@ -27,8 +29,30 @@ public class ScoreManager : MonoBehaviour
     UpdateScoreText();
 }
 
-    void UpdateScoreText()
+   void UpdateScoreText()
+{
+    scoreText.text = leftScore + " : " + rightScore;
+
+    // Проверка: если разница >= 10
+    if (Mathf.Abs(leftScore - rightScore) >= 10)
     {
-        scoreText.text = leftScore + " : " + rightScore;
+        EndGame();
     }
+}
+
+void EndGame()
+{
+    // Останавливаем время
+    Time.timeScale = 0f;
+
+    // Показываем кнопку Restart
+    restartButton.SetActive(true);
+}
+
+// Метод для кнопки
+public void RestartGame()
+{
+    Time.timeScale = 1f;
+    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+}
 }
