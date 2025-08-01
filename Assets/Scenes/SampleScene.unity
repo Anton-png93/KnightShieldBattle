@@ -1278,7 +1278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maceBall: {fileID: 1799569664}
-  startSpeed: 2
+  startSpeed: 5
   maxSpeed: 5
   speedGrowth: 0.1
   startError: 0.5

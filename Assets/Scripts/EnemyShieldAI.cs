@@ -43,17 +43,17 @@ public class EnemyShieldAI : MonoBehaviour
             currentError = Mathf.Max(minError, currentError - errorDecrease * Time.deltaTime);
         }
 
-        // Позиционирование с ошибкой
-        float targetX = maceBall.position.x + Random.Range(-currentError, currentError);
-        float newX = Mathf.MoveTowards(transform.position.x, targetX, currentSpeed * Time.deltaTime);
-        Vector2 newPos = new Vector2(newX, rb.position.y);
+        // Плавное движение щита к позиции мяча
+float targetX = maceBall.position.x + Random.Range(-currentError, currentError);
 
-        rb.linearVelocity = (newPos - rb.position) / Time.fixedDeltaTime;
-        Vector3 pos = transform.position;
-        float top = Camera.main.orthographicSize - 1f;   // верхнее ограничение
-        float bottom = 0f;  // середина поля — ниже не пускаем
-        pos.y = Mathf.Clamp(pos.y, bottom, top);
-        transform.position = pos;
+// Цель: меняем только X, Y оставляем как есть
+Vector2 targetPos = new Vector2(targetX, rb.position.y);
+
+// Lerp = плавное приближение к цели
+Vector2 smoothPos = Vector2.Lerp(rb.position, targetPos, currentSpeed * Time.deltaTime);
+
+// Применяем новую позицию
+rb.MovePosition(smoothPos);
        
     }
 }
