@@ -50,21 +50,27 @@ public class MaceBallController : MonoBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D collision)
+{
+    audioSource.PlayOneShot(hitSound);
+
+    // Если мяч ударился о щит
+    if (collision.gameObject.CompareTag("PlayerShield") || collision.gameObject.CompareTag("EnemyShield"))
     {
-        audioSource.PlayOneShot(hitSound);
+        // Берём точку контакта
+        float hitX = collision.contacts[0].point.x;
+        float shieldX = collision.collider.bounds.center.x;
+        float shieldWidth = collision.collider.bounds.size.x;
 
-        // Берём текущую скорость
-        Vector2 velocity = rb.linearVelocity;
+        // Вычисляем смещение от центра щита (-1 = левый край, 0 = центр, 1 = правый край)
+        float offset = (hitX - shieldX) / (shieldWidth / 2f);
 
-        // Если мяч летит почти по прямой (почти горизонтально) → задаём минимальный угол
-        if (Mathf.Abs(velocity.y) < 0.3f)
-        {
-            velocity.y = Mathf.Sign(velocity.y) * 0.3f;
-        }
+        // Делаем новый вектор скорости: X зависит от места удара, Y остаётся направленным вверх/вниз
+        Vector2 newVelocity = new Vector2(offset, rb.linearVelocity.y > 0 ? 1 : -1);
 
-        // Обновляем скорость
-        rb.linearVelocity = velocity.normalized * currentSpeed;
+        // Нормализуем и применяем текущую скорость
+        rb.linearVelocity = newVelocity.normalized * currentSpeed;
     }
+}
 
     IEnumerator DelayedStart()
     {
