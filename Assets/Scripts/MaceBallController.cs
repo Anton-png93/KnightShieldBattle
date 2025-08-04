@@ -21,50 +21,57 @@ public class MaceBallController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-   public void ResetBall(bool fromPlayer)
-{
-    rb.linearVelocity = Vector2.zero;
-
-    if (fromPlayer)
+    public void ResetBall(bool fromPlayer)
     {
-        // Находим щит игрока
-        Transform playerShield = GameObject.FindWithTag("PlayerShield").transform;
+        rb.linearVelocity = Vector2.zero;
 
-        // Мяч появляется чуть выше щита игрока (на 1 юнит выше)
-        transform.position = new Vector2(playerShield.position.x, playerShield.position.y + 1f);
+        if (fromPlayer)
+        {
+            // Находим щит игрока
+            Transform playerShield = GameObject.FindWithTag("PlayerShield").transform;
 
-        rb.linearVelocity = new Vector2(Random.Range(-1f, 1f), 1f).normalized * startSpeed;
+            // Шар появляется чуть выше щита игрока
+            transform.position = new Vector2(playerShield.position.x, playerShield.position.y + 1f);
+
+            rb.linearVelocity = new Vector2(Random.Range(-1f, 1f), 1f).normalized * startSpeed;
+        }
+        else
+        {
+            // Находим щит врага
+            Transform enemyShield = GameObject.FindWithTag("EnemyShield").transform;
+
+            // Шар появляется чуть ниже щита врага
+            transform.position = new Vector2(enemyShield.position.x, enemyShield.position.y - 1f);
+
+            rb.linearVelocity = new Vector2(Random.Range(-1f, 1f), -1f).normalized * startSpeed;
+        }
+
+        timeSinceServe = 0f;
     }
-    else
-    {
-        // Находим щит врага
-        Transform enemyShield = GameObject.FindWithTag("EnemyShield").transform;
-
-        // Мяч появляется чуть ниже щита врага (на 1 юнит ниже)
-        transform.position = new Vector2(enemyShield.position.x, enemyShield.position.y - 1f);
-
-        rb.linearVelocity = new Vector2(Random.Range(-1f, 1f), -1f).normalized * startSpeed;
-    }
-
-    timeSinceServe = 0f;
-}
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         audioSource.PlayOneShot(hitSound);
 
-        // Если мяч летит почти горизонтально — добавим ему немного Y, чтобы не застревал
-        if (Mathf.Abs(rb.linearVelocity.y) < 0.5f)
+        // Берём текущую скорость
+        Vector2 velocity = rb.linearVelocity;
+
+        // Если мяч летит почти по прямой (почти горизонтально) → задаём минимальный угол
+        if (Mathf.Abs(velocity.y) < 0.3f)
         {
-            Vector2 fixedVelocity = rb.linearVelocity;
-            fixedVelocity.y = Random.Range(-1f, 1f);
-            rb.linearVelocity = fixedVelocity.normalized * currentSpeed;
+            velocity.y = Mathf.Sign(velocity.y) * 0.3f;
         }
+
+        // Обновляем скорость
+        rb.linearVelocity = velocity.normalized * currentSpeed;
     }
 
     IEnumerator DelayedStart()
     {
+        // Ждём чуть‑чуть, чтобы всё успело инициализироваться
         yield return new WaitForSeconds(0.1f);
-        ResetBall(scoreManager.lastGoalByPlayer); // запускаем после старта
+
+        // Запускаем мяч с последнего направления
+        ResetBall(scoreManager.lastGoalByPlayer);
     }
 }
